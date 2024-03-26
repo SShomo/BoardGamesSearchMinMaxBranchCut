@@ -16,6 +16,7 @@ public class TicTacToeBoard : MonoBehaviour
                 GameObject temp = Instantiate(nodeImage);
                 temp.transform.position = new Vector2(i * 1.1f, j * 1.1f);
                 temp.GetComponent<Node>().gridPos = new Vector2(i, j);
+                temp.name = $"Tile_{i}_{j}";
                 board.Add(temp.GetComponent<Node>());
             }
         }
