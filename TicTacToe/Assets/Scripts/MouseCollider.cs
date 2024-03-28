@@ -5,8 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class MouseCollider : MonoBehaviour
 {
-    delegate Node ClickedNode();
-    ClickedNode clickedNode;
+    public bool isOverlap;
+    public Node clickedNode;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +30,18 @@ public class MouseCollider : MonoBehaviour
     {
         if (collision.gameObject.tag == "Tile")
         {
+            clickedNode = collision.gameObject.GetComponent<Node>();
+            isOverlap = true;
+            //Debug.Log(collision.gameObject.name);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Tile")
+        {
+            isOverlap = false;
+            clickedNode = null;
             //Debug.Log(collision.gameObject.name);
         }
     }

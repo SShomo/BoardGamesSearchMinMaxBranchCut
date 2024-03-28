@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public Vector2 gridPos;
-    [SerializeField] TileOptions setTile;
+    [SerializeField] TileOptions setTile = TileOptions.Empty;
 
     private void Start()
     {
@@ -13,9 +13,10 @@ public class Node : MonoBehaviour
         gameObject.AddComponent<BoxCollider2D>();
         gameObject.AddComponent<Rigidbody2D>().gravityScale = 0;
     }
-    enum TileOptions
-    { X, O  }
+    public enum TileOptions
+    { X, O, Empty  }
 
     public void SetX() {  setTile = TileOptions.X; }
+    public TileOptions GetTile() { return setTile; }
     public void SetO() {  setTile = TileOptions.O; }
 }
