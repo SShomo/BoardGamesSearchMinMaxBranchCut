@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class TicTacToeBoard : MonoBehaviour
 {
-    //public static TicTacToeBoard board;
     public List<Node> board;
     [SerializeField] GameObject nodeImage;
-    //[SerializeField] GameObject XImage;
-    //[SerializeField] GameObject OImage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +21,22 @@ public class TicTacToeBoard : MonoBehaviour
                 board.Add(temp.GetComponent<Node>());
             }
         }
+    }
+
+    public List<Node> GetEmptyNodes()
+    {
+        List<Node> emptyNodes = new List<Node>();
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board[i + 3 * j].GetComponent<Node>().GetTile() == Node.TileOptions.Empty)
+                {
+                    emptyNodes.Add(board[i + 3 * j]);
+                }
+            }
+        }
+        return emptyNodes;
     }
 
     public bool HasWinner()

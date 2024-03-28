@@ -342,6 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0029c1a25e60d945a75058a9c85e6e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game: {fileID: 893276356}
   whoseTurn: {fileID: 1222410572}
   mouseCollider: {fileID: 1278934822}
   XImage: {fileID: 7907545535405859987, guid: 203dc31c4dc93534e994a70b9a91af55, type: 3}

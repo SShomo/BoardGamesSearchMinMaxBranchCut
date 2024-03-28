@@ -5,6 +5,7 @@ using TMPro;
 
 public class PlayGame : MonoBehaviour
 {
+    [SerializeField] TicTacToeBoard game;
     [SerializeField] private TextMeshProUGUI whoseTurn;
     private Turn turn = Turn.Player;
     [SerializeField] MouseCollider mouseCollider;
@@ -24,6 +25,8 @@ public class PlayGame : MonoBehaviour
         {
             MakeMove(mouseCollider.clickedNode);
         }
+        else if (Input.GetMouseButtonDown(0))
+            AIMove();
     }
 
     public void MakeMove(Node tile)
@@ -50,9 +53,11 @@ public class PlayGame : MonoBehaviour
     {
         if(turn == Turn.AI)
         {
-            int x = Random.Range(0, 3);
-            int y = Random.Range(0, 3);
-            //if()
+            int temp = Random.Range(0, game.GetEmptyNodes().Count);
+            game.GetEmptyNodes()[temp].SetO();
+            GameObject OTile = Instantiate(OImage);
+            OTile.transform.position = game.GetEmptyNodes()[temp].transform.position;
+            turn = Turn.Player;
         }
     }
 
