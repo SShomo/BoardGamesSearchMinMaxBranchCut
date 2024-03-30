@@ -313,8 +313,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132ac3684fc42a548a1b62fa0fa68772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winCon: 1
   board: []
   nodeImage: {fileID: 1312894227106234138, guid: 0b749e6337872104a9f039a2a6bcbb7e, type: 3}
+  OImage: {fileID: 6133101268391970485, guid: d1b36b70fb8dacc48b09cf0e8511040f, type: 3}
 --- !u!4 &893276357
 Transform:
   m_ObjectHideFlags: 0
@@ -346,7 +348,6 @@ MonoBehaviour:
   whoseTurn: {fileID: 1222410572}
   mouseCollider: {fileID: 1278934822}
   XImage: {fileID: 7907545535405859987, guid: 203dc31c4dc93534e994a70b9a91af55, type: 3}
-  OImage: {fileID: 6133101268391970485, guid: d1b36b70fb8dacc48b09cf0e8511040f, type: 3}
 --- !u!1 &1222410570
 GameObject:
   m_ObjectHideFlags: 0

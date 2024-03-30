@@ -11,22 +11,36 @@ public class PlayGame : MonoBehaviour
     [SerializeField] MouseCollider mouseCollider;
 
     [SerializeField] GameObject XImage;
-    [SerializeField] GameObject OImage;
 
     // Update is called once per frame
     void Update()
     {
-        if(turn == Turn.AI)
-            whoseTurn.text = "AI Turn";
-        else
-             whoseTurn.text = "Player Turn";
-
-        if (Input.GetMouseButtonUp(0) && mouseCollider.isOverlap)
+        if(game.winCon == 1)
         {
-            MakeMove(mouseCollider.clickedNode);
+            if(turn == Turn.AI)
+                whoseTurn.text = "AI Turn";
+            else
+                 whoseTurn.text = "Player Turn";
+
+            if (Input.GetMouseButtonUp(0) && mouseCollider.isOverlap)
+            {
+                MakeMove(mouseCollider.clickedNode);
+            }
+            else if (Input.GetMouseButtonDown(0))
+                AIMove();
         }
-        else if (Input.GetMouseButtonDown(0))
-            AIMove();
+        else if(game.winCon == 2)
+        {
+            whoseTurn.text = "PLAYER WON";
+        }
+        else if (game.winCon == 3)
+        {
+            whoseTurn.text = "AI WON";
+        }
+        else
+        {
+            whoseTurn.text = "TIE";
+        }
     }
 
     public void MakeMove(Node tile)
@@ -53,10 +67,7 @@ public class PlayGame : MonoBehaviour
     {
         if(turn == Turn.AI)
         {
-            int temp = Random.Range(0, game.GetEmptyNodes().Count);
-            game.GetEmptyNodes()[temp].SetO();
-            GameObject OTile = Instantiate(OImage);
-            OTile.transform.position = game.GetEmptyNodes()[temp].transform.position;
+            game.AIMove();
             turn = Turn.Player;
         }
     }
