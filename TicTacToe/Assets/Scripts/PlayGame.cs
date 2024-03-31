@@ -37,7 +37,7 @@ public class PlayGame : MonoBehaviour
         {
             whoseTurn.text = "AI WON";
         }
-        else
+        else if( game.winCon == 4) 
         {
             whoseTurn.text = "TIE";
         }

@@ -43,8 +43,6 @@ public class TicTacToeBoard : MonoBehaviour
                 }
             }
         }
-        if (emptyNodes.Count == 0)
-            winCon = 4;
         return emptyNodes;
     }
 
@@ -58,6 +56,10 @@ public class TicTacToeBoard : MonoBehaviour
           GameObject OTile = Instantiate(OImage);
           OTile.transform.position = tempList[temp].transform.position;
       }
+      else
+      {  
+          winCon = 4;
+      }
 
     }
 
@@ -67,17 +69,18 @@ public class TicTacToeBoard : MonoBehaviour
         //if 2 = player won
         //if 3 = ai won
 
-        if ((board[0].GetTile() == Node.TileOptions.O  && board[1].GetTile() == Node.TileOptions.O && board[2].GetTile() == Node.TileOptions.O)
+        if ((board[0].GetTile() == Node.TileOptions.O && board[1].GetTile() == Node.TileOptions.O && board[2].GetTile() == Node.TileOptions.O)
             || (board[3].GetTile() == Node.TileOptions.O && board[4].GetTile() == Node.TileOptions.O && board[5].GetTile() == Node.TileOptions.O)
             || (board[6].GetTile() == Node.TileOptions.O && board[7].GetTile() == Node.TileOptions.O && board[8].GetTile() == Node.TileOptions.O)
             || (board[0].GetTile() == Node.TileOptions.O && board[3].GetTile() == Node.TileOptions.O && board[6].GetTile() == Node.TileOptions.O)
             || (board[1].GetTile() == Node.TileOptions.O && board[4].GetTile() == Node.TileOptions.O && board[7].GetTile() == Node.TileOptions.O)
             || (board[2].GetTile() == Node.TileOptions.O && board[5].GetTile() == Node.TileOptions.O && board[8].GetTile() == Node.TileOptions.O)
             || (board[0].GetTile() == Node.TileOptions.O && board[4].GetTile() == Node.TileOptions.O && board[8].GetTile() == Node.TileOptions.O)
-            || (board[6].GetTile() == Node.TileOptions.O && board[4].GetTile() == Node.TileOptions.O && board[2].GetTile() == Node.TileOptions.O)) {
+            || (board[6].GetTile() == Node.TileOptions.O && board[4].GetTile() == Node.TileOptions.O && board[2].GetTile() == Node.TileOptions.O))
+        {
             return 3;
         }
-        else if((board[0].GetTile() == Node.TileOptions.X && board[1].GetTile() == Node.TileOptions.X && board[2].GetTile() == Node.TileOptions.X)
+        else if ((board[0].GetTile() == Node.TileOptions.X && board[1].GetTile() == Node.TileOptions.X && board[2].GetTile() == Node.TileOptions.X)
             || (board[3].GetTile() == Node.TileOptions.X && board[4].GetTile() == Node.TileOptions.X && board[5].GetTile() == Node.TileOptions.X)
             || (board[6].GetTile() == Node.TileOptions.X && board[7].GetTile() == Node.TileOptions.X && board[8].GetTile() == Node.TileOptions.X)
             || (board[0].GetTile() == Node.TileOptions.X && board[3].GetTile() == Node.TileOptions.X && board[6].GetTile() == Node.TileOptions.X)
@@ -85,9 +88,16 @@ public class TicTacToeBoard : MonoBehaviour
             || (board[2].GetTile() == Node.TileOptions.X && board[5].GetTile() == Node.TileOptions.X && board[8].GetTile() == Node.TileOptions.X)
             || (board[0].GetTile() == Node.TileOptions.X && board[4].GetTile() == Node.TileOptions.X && board[8].GetTile() == Node.TileOptions.X)
             || (board[6].GetTile() == Node.TileOptions.X && board[4].GetTile() == Node.TileOptions.X && board[2].GetTile() == Node.TileOptions.X))
-            {
-                return 2;
-            }
+        {
+            return 2;
+        }
+        else if (winCon == 4)
+            return 4;
         return 1;
+    }
+
+    public void MonteCarloTurn()
+    {
+
     }
 }
