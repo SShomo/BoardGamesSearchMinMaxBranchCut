@@ -5,11 +5,11 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public int visits = 0;
-    public float value;
+    public int value;
 
-
+    [SerializeField] TicTacToeBoard board;
     public Vector2 gridPos;
-    [SerializeField] TileOptions setTile = TileOptions.Empty;
+    public TileOptions setTile = TileOptions.Empty;
 
     private void Start()
     {

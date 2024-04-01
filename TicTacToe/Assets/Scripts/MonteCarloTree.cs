@@ -3,67 +3,62 @@ using System.Collections.Generic;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
+//Credit to: https://www.youtube.com/watch?v=gvlO_-Fdk9w for helping with the algorithm
 public class MonteCarloTree
 {
-    //https://www.youtube.com/watch?v=c8SLNEpFSrs
-    //https://builtin.com/machine-learning/monte-carlo-tree-search
-    [SerializeField] private int numSimulations = 1000;
-    private int chosenConst = 3;
-    TicTacToeBoard board;
-    Node rootNode;
-    List<Node> childNodes;
+    [SerializeField] private int numSimulations = 100;
 
-    public void Selection(Node parent)
+    public Node GetBestMove(TicTacToeBoard bord, PlayGame.Turn turn)
     {
-        float ucb;
-        List<Node> possibleMoves = board.GetEmptyNodes();
-        foreach (Node currentNode in possibleMoves) 
+        List<Node> holder = bord.CloneBoard();
+        int[] moreLists = new int[9];
+        for(int e = 0; e < 9; e++)
+            moreLists[e] = 0;
+
+        for (int i = 0; i < numSimulations; i++)
         {
-            currentNode.visits++;
-           // ucb = nodeMean + chosenConst * Mathf.Sqrt(Mathf.Log(((float)parent.visits) /currentNode.visits));
-            Selection(currentNode);
-        }
-    }
+            bord.board = holder;
+            TicTacToeBoard simulation = bord;
+            PlayGame.Turn currentTurn = turn;
 
-    public void Expansion()
-    {
-        Selection(rootNode);
-    }
+            List<Node> simBoards = new List<Node>();
+            List<Node> nextMove = simulation.GetEmptyNodes();
 
-    public int Simulation()
-    {
-        int results;
-        TicTacToeBoard simulation;
-        simulation = board;
+            int score = 3 * 3;
 
-        while (simulation.CheckForWinner() != 1 || simulation.GetEmptyNodes().Count < 1)
-        {
-            List<Node> tempList = simulation.GetEmptyNodes();
-            if (tempList.Count > 0)
+            while (nextMove.Count > 0)
             {
-                int temp = Random.Range(0, tempList.Count);
-                tempList[temp].SetO();
+                //AI Move
+                int temp = Random.Range(0, nextMove.Count);
+                simBoards.Add(nextMove[temp]);
+                nextMove[temp].SetO();
+
+                if (simulation.CheckForWinner() == 3)
+                    break;
+
+                score -= 1;
+
+                currentTurn = (currentTurn == PlayGame.Turn.Player) ? PlayGame.Turn.AI : PlayGame.Turn.Player;
+                nextMove = simulation.GetEmptyNodes();
             }
 
-            tempList = simulation.GetEmptyNodes();
-            if (tempList.Count > 0)
+            Node firstMove = simBoards[0];
+            if (currentTurn == PlayGame.Turn.Player && simulation.CheckForWinner() == 2)
+                score *= -1;
+
+            moreLists[firstMove.value] += score;
+        } 
+        int best = 0;
+        int highScore = -1;
+        for(int y = 0; y < moreLists.Length; y++)
+        {
+            if (moreLists[y] > highScore)
             {
-                int temp = Random.Range(0, tempList.Count);
-                tempList[temp].SetX();
+                highScore = moreLists[y];
+                best = y;
             }
         }
-
-        if (simulation.CheckForWinner() == 2)
-            results = -1;
-        else if(simulation.CheckForWinner() == 3)
-            results = 1;
-        else
-            results = 0;
-
-        return results;
-    }
-    public void Backpropagation()
-    {
-        Simulation();
+        Node[] ee = bord.GetEmptyNodes().ToArray();
+        return ee[best];
     }
 }

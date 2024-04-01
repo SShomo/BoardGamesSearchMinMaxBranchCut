@@ -7,11 +7,17 @@ public class PlayGame : MonoBehaviour
 {
     [SerializeField] TicTacToeBoard game;
     [SerializeField] private TextMeshProUGUI whoseTurn;
-    private Turn turn = Turn.Player;
+    public Turn turn = Turn.Player;
     [SerializeField] MouseCollider mouseCollider;
+    public MonteCarloTree mcts;
 
     [SerializeField] GameObject XImage;
 
+
+    private void Start()
+    {
+        mcts = new MonteCarloTree();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -67,12 +73,16 @@ public class PlayGame : MonoBehaviour
     {
         if(turn == Turn.AI)
         {
-            game.AIMove();
+            List<Node> holder = game.board;
+            Node bestMove = mcts.GetBestMove(game, Turn.AI);
+            game.board = holder;
+            game.MCTSMove(bestMove);
+            //game.RandAIMove();
             turn = Turn.Player;
         }
     }
 
-    enum Turn
+    public enum Turn
     {
         Player, AI
     }

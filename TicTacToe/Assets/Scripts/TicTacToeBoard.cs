@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class TicTacToeBoard : MonoBehaviour
@@ -12,6 +13,8 @@ public class TicTacToeBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        board = new List<Node>();
+        int count = 0;
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -19,8 +22,10 @@ public class TicTacToeBoard : MonoBehaviour
                 GameObject temp = Instantiate(nodeImage);
                 temp.transform.position = new Vector2(i * 1.1f, j * 1.1f);
                 temp.GetComponent<Node>().gridPos = new Vector2(i, j);
+                temp.GetComponent<Node>().value = count;
                 temp.name = $"Tile_{i}_{j}";
                 board.Add(temp.GetComponent<Node>());
+                count++;
             }
         }
     }
@@ -46,20 +51,36 @@ public class TicTacToeBoard : MonoBehaviour
         return emptyNodes;
     }
 
-    public void AIMove()
+    public void MCTSMove(Node n)
     {
-      List<Node> tempList = GetEmptyNodes();
-      if(tempList.Count > 0)
-      {
-          int temp = Random.Range(0, tempList.Count);
-          tempList[temp].SetO();
-          GameObject OTile = Instantiate(OImage);
-          OTile.transform.position = tempList[temp].transform.position;
-      }
-      else
-      {  
-          winCon = 4;
-      }
+        List<Node> tempList = GetEmptyNodes();
+        if (tempList.Count > 0)
+        {
+            board[n.value].SetO();
+            GameObject OTile = Instantiate(OImage);
+            OTile.transform.position = board[n.value].transform.position;
+        }
+        else
+        {
+            winCon = 4;
+        }
+
+    }
+
+    public void RandAIMove()
+    {
+        List<Node> tempList = GetEmptyNodes();
+        if (tempList.Count > 0)
+        {
+            int temp = Random.Range(0, tempList.Count);
+            tempList[temp].SetO();
+            GameObject OTile = Instantiate(OImage);
+            OTile.transform.position = tempList[temp].transform.position;
+        }
+        else
+        {
+            winCon = 4;
+        }
 
     }
 
@@ -96,8 +117,41 @@ public class TicTacToeBoard : MonoBehaviour
         return 1;
     }
 
-    public void MonteCarloTurn()
-    {
+    /*    public TicTacToeBoard Clone()
+        {
+            TicTacToeBoard cloneBoard = new TicTacToeBoard();
+            cloneBoard.winCon = this.winCon;
+            cloneBoard.board = new List<Node>();
 
+            // Iterate through each node in the original board
+            foreach (var originalNode in this.board)
+            {
+                Node clonedNode = new Node();
+                clonedNode.value = originalNode.value;
+                clonedNode.gridPos = originalNode.gridPos;
+                clonedNode.setTile = originalNode.GetTile();
+
+                cloneBoard.board.Add(clonedNode);
+            }
+
+            return cloneBoard;
+        }*/
+
+    public List<Node> CloneBoard()
+    {
+        List<Node> clonedBoard = new List<Node>();
+       
+        // Iterate through each node in the original board
+        foreach (var originalNode in this.board)
+        {
+            Node clonedNode = new Node();
+            clonedNode.value = originalNode.value;
+            clonedNode.gridPos = originalNode.gridPos;
+            clonedNode.setTile = originalNode.GetTile();
+
+            clonedBoard.Add(clonedNode);
+        }
+
+        return clonedBoard;
     }
 }
