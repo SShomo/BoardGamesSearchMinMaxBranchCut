@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
+    public int visits = 0;
+    public float value;
+
+
     public Vector2 gridPos;
     [SerializeField] TileOptions setTile = TileOptions.Empty;
 
