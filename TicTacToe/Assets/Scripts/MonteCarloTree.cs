@@ -6,19 +6,21 @@ using UnityEngine;
 //Credit to: https://www.youtube.com/watch?v=gvlO_-Fdk9w for helping with the algorithm
 public class MonteCarloTree
 {
-    [SerializeField] private int numSimulations = 100;
+    private int numSimulations = 9000;
 
     public Node GetBestMove(TicTacToeBoard bord, PlayGame.Turn turn)
     {
-        List<Node> holder = bord.CloneBoard();
+        TicTacToeBoard tempBoard = new TicTacToeBoard();
+
         int[] moreLists = new int[9];
         for(int e = 0; e < 9; e++)
             moreLists[e] = 0;
 
         for (int i = 0; i < numSimulations; i++)
         {
-            bord.board = holder;
-            TicTacToeBoard simulation = bord;
+            List<Node> holder = bord.CloneBoard();
+            tempBoard.board = holder;
+            TicTacToeBoard simulation = tempBoard;
             PlayGame.Turn currentTurn = turn;
 
             List<Node> simBoards = new List<Node>();
@@ -31,6 +33,7 @@ public class MonteCarloTree
                 //AI Move
                 int temp = Random.Range(0, nextMove.Count);
                 simBoards.Add(nextMove[temp]);
+
                 nextMove[temp].SetO();
 
                 if (simulation.CheckForWinner() == 3)
@@ -47,7 +50,10 @@ public class MonteCarloTree
                 score *= -1;
 
             moreLists[firstMove.value] += score;
+            bord.DestroyObject();
+
         } 
+
         int best = 0;
         int highScore = -1;
         for(int y = 0; y < moreLists.Length; y++)
@@ -58,7 +64,7 @@ public class MonteCarloTree
                 best = y;
             }
         }
-        Node[] ee = bord.GetEmptyNodes().ToArray();
+        Node[] ee = bord.board.ToArray();
         return ee[best];
     }
 }

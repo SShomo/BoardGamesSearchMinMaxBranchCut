@@ -71,7 +71,7 @@ public class PlayGame : MonoBehaviour
 
     public void AIMove()
     {
-        if(turn == Turn.AI)
+        if(turn == Turn.AI && game.GetEmptyNodes().Count > 0)
         {
             List<Node> holder = game.board;
             Node bestMove = mcts.GetBestMove(game, Turn.AI);
@@ -79,6 +79,10 @@ public class PlayGame : MonoBehaviour
             game.MCTSMove(bestMove);
             //game.RandAIMove();
             turn = Turn.Player;
+        }
+        else if(turn == Turn.AI)
+        {
+            game.winCon = 4;
         }
     }
 

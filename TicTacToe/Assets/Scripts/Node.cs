@@ -15,6 +15,7 @@ public class Node : MonoBehaviour
     {
         gameObject.tag = "Tile";
         gameObject.AddComponent<BoxCollider2D>();
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         gameObject.AddComponent<Rigidbody2D>().gravityScale = 0;
     }
     public enum TileOptions

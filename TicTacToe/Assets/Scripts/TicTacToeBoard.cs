@@ -9,10 +9,12 @@ public class TicTacToeBoard : MonoBehaviour
     public List<Node> board;
     [SerializeField] GameObject nodeImage;
     [SerializeField] GameObject OImage;
+    private List<GameObject> toDel;
 
     // Start is called before the first frame update
     void Start()
     {
+        toDel = new List<GameObject>();
         board = new List<Node>();
         int count = 0;
         for (int i = 0; i < 3; i++)
@@ -117,41 +119,32 @@ public class TicTacToeBoard : MonoBehaviour
         return 1;
     }
 
-    /*    public TicTacToeBoard Clone()
-        {
-            TicTacToeBoard cloneBoard = new TicTacToeBoard();
-            cloneBoard.winCon = this.winCon;
-            cloneBoard.board = new List<Node>();
-
-            // Iterate through each node in the original board
-            foreach (var originalNode in this.board)
-            {
-                Node clonedNode = new Node();
-                clonedNode.value = originalNode.value;
-                clonedNode.gridPos = originalNode.gridPos;
-                clonedNode.setTile = originalNode.GetTile();
-
-                cloneBoard.board.Add(clonedNode);
-            }
-
-            return cloneBoard;
-        }*/
-
     public List<Node> CloneBoard()
     {
         List<Node> clonedBoard = new List<Node>();
-       
+        toDel = new List<GameObject>();
         // Iterate through each node in the original board
         foreach (var originalNode in this.board)
         {
-            Node clonedNode = new Node();
-            clonedNode.value = originalNode.value;
-            clonedNode.gridPos = originalNode.gridPos;
-            clonedNode.setTile = originalNode.GetTile();
+            GameObject clonedNode = new GameObject();
+            clonedNode.AddComponent<Node>();
+            clonedNode.name = "Temp " + originalNode.name;
+            clonedNode.GetComponent<Node>().gridPos = originalNode.gridPos;
+            clonedNode.GetComponent<Node>().value = originalNode.value;
+            clonedNode.GetComponent<Node>().setTile = originalNode.GetTile();
 
-            clonedBoard.Add(clonedNode);
+            clonedBoard.Add(clonedNode.GetComponent<Node>());
+            toDel.Add(clonedNode);
         }
 
         return clonedBoard;
+    }
+
+    public void DestroyObject()
+    {
+        for(int i = toDel.Count-1; i >= 0; i--)
+        {
+            Destroy(toDel[i]);
+        }
     }
 }
